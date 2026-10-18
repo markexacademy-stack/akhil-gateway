@@ -15,9 +15,12 @@
       --line: #234237;
     }
     * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
       font-family: Georgia, "Times New Roman", serif;
       color: var(--ink);
       background:
@@ -25,20 +28,20 @@
         var(--bg);
     }
     main {
-      width: min(440px, calc(100% - 32px));
+      width: min(440px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 36px 0 48px;
+      padding: 20px 0 calc(28px + env(safe-area-inset-bottom));
     }
     .logo {
       display: block;
-      width: min(360px, 100%);
+      width: 112px;
       height: auto;
-      margin: 0 auto 8px;
+      margin: 0 auto 14px;
       mix-blend-mode: lighten;
     }
     h1 {
-      font-size: 34px;
-      line-height: 1.05;
+      font-size: clamp(26px, 7vw, 34px);
+      line-height: 1.1;
       font-weight: 500;
       margin: 0 0 8px;
     }
@@ -64,12 +67,15 @@
       font-family: "Segoe UI", sans-serif;
     }
     .amounts button, .custom {
+      width: 100%;
       border: 1px solid var(--line);
       background: transparent;
       color: var(--ink);
       border-radius: 12px;
       padding: 12px 10px;
+      min-height: 48px;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .amounts button strong, .summary strong {
       display: block;
@@ -98,7 +104,7 @@
       color: var(--ink);
       border-radius: 12px;
       padding: 12px 14px;
-      font-size: 18px;
+      font-size: 16px;
     }
     .qr-wrap {
       margin-top: 16px;
@@ -117,6 +123,7 @@
       margin-top: 14px;
       font-family: "Segoe UI", sans-serif;
     }
+    .summary .amount { text-align: right; }
     .pay-link {
       display: block;
       text-align: center;
@@ -127,6 +134,15 @@
       font-weight: 700;
       border-radius: 14px;
       padding: 14px 16px;
+      min-height: 48px;
+      touch-action: manipulation;
+    }
+    @media (max-width: 480px) {
+      .amounts { grid-template-columns: 1fr; }
+      .summary { align-items: flex-start; }
+      .summary .amount { text-align: right; }
+      .qr-wrap { min-height: 0; padding: 10px; }
+      .card { padding: 14px; }
     }
     .note {
       margin: 14px 4px 0;
@@ -152,7 +168,7 @@
       <div class="qr-wrap" id="qr" aria-label="UPI QR code"></div>
       <div class="summary">
         <div><span>Payee</span><strong>Markex Trading Academy</strong></div>
-        <div style="text-align:right"><span>Amount</span><strong id="amount-label">₹5,000.00</strong></div>
+        <div class="amount"><span>Amount</span><strong id="amount-label">₹5,000.00</strong></div>
       </div>
       <a class="pay-link" id="pay-link" href="#">Open in UPI app</a>
     </section>
