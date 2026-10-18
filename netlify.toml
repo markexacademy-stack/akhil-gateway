@@ -1,0 +1,4 @@
+# Customer pay page only. The payment gateway process does not run on Netlify.
+[build]
+  publish = "."
+  command = "echo markex-pay-page"
