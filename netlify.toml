@@ -2,3 +2,8 @@
 [build]
   publish = "."
   command = "echo markex-pay-page"
+
+[build.environment]
+  # The repo stores large videos in Git LFS. The pay page does not need them,
+  # and downloading them makes Netlify cancel the deploy before it goes live.
+  GIT_LFS_SKIP_SMUDGE = "1"
