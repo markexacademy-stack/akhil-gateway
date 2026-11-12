@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MARKEX Diwali payments</title>
+  <meta name="theme-color" content="#1a0b08" />
+  <style>
+    :root {
+      --gold: #e8b84a;
+      --saffron: #ff8a3d;
+      --ink: #fff6e8;
+      --muted: #d7b896;
+      --bg: #140806;
+      --card: #2a120c;
+      --line: rgba(232, 184, 74, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(700px 280px at 20% -10%, rgba(255, 138, 61, 0.18), transparent 55%),
+        linear-gradient(180deg, #1a0b08, #0f0604);
+      font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+    }
+    main { width: min(1100px, calc(100% - 28px)); margin: 0 auto; padding: 24px 0 48px; }
+    .offer {
+      display: inline-block;
+      margin: 0 0 10px;
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      margin: 0 0 8px;
+    }
+    form, .summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    input, select, button {
+      background: var(--card);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+    button {
+      background: linear-gradient(135deg, var(--gold), var(--saffron));
+      color: #2a1208;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border-bottom: 1px solid var(--line); text-align: left; padding: 8px; vertical-align: top; }
+    p { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="offer">Diwali Offer Desk</p>
+    <h1>MARKEX payments</h1>
+    <p>Latest 50 card attempts for the Diwali checkout. A captured payment still shows settlement as pending until the card company pays the bank. UPI payments settle directly in the UPI app.</p>
+    <form id="filters">
+      <input id="token" type="password" placeholder="Admin access token" autocomplete="current-password" />
+      <input id="reference" placeholder="Transaction reference" />
+      <select id="status">
+        <option value="">Any status</option>
+        <option>CREATED</option><option>PENDING</option><option>PROCESSING</option>
+        <option>SUCCESS</option><option>FAILED</option><option>CANCELLED</option><option>REFUNDED</option>
+      </select>
+      <select id="method">
+        <option value="">Any method</option>
+        <option value="credit_card">Credit card</option>
+        <option value="debit_card">Debit card</option>
+      </select>
+      <input id="from" type="date" />
+      <input id="to" type="date" />
+      <button type="submit">Search</button>
+    </form>
+    <div class="summary" id="summary"></div>
+    <div id="table"></div>
+  </main>
+  <script>
+    const tokenInput = document.getElementById("token");
+    tokenInput.value = sessionStorage.getItem("markex-admin-token") || "";
+    document.getElementById("filters").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      sessionStorage.setItem("markex-admin-token", tokenInput.value);
+      const params = new URLSearchParams();
+      for (const id of ["reference", "status", "method", "from", "to"]) {
+        const value = document.getElementById(id).value;
+        if (value) params.set(id, id === "from" ? value + "T00:00:00Z" : id === "to" ? value + "T23:59:59Z" : value);
+      }
+      const response = await fetch("/api/payments/transactions?" + params.toString(), {
+        headers: { Authorization: "Bearer " + tokenInput.value }
+      });
+      const body = await response.json();
+      const summary = document.getElementById("summary");
+      const table = document.getElementById("table");
+      if (!response.ok) {
+        summary.innerHTML = "";
+        table.innerHTML = "<p>" + (body.error || "The payment list could not be loaded.") + "</p>";
+        return;
+      }
+      const money = "₹" + (body.summary.successful_amount_paise / 100).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      summary.innerHTML = "<p>Attempts " + body.summary.attempts + "</p><p>Captured " + body.summary.successful + "</p><p>Pending " + body.summary.pending + "</p><p>Failed " + body.summary.failed + "</p><p>Captured amount " + money + "</p>";
+      const rows = body.transactions.map((row) => "<tr><td>" + row.transaction_reference + "</td><td>" + row.amount + "</td><td>" + row.payment_method + "</td><td>" + row.payment_provider + "</td><td>" + row.payment_status + "</td><td>" + row.settlement_status + "</td><td>" + (row.provider_payment_id || "") + "</td><td>" + (row.refund_status || "") + "</td><td>" + row.created_at + "</td></tr>").join("");
+      table.innerHTML = "<table><thead><tr><th>Reference</th><th>Amount</th><th>Method</th><th>Provider</th><th>Status</th><th>Settlement</th><th>Provider payment</th><th>Refund</th><th>Created</th></tr></thead><tbody>" + rows + "</tbody></table>";
+    });
+  </script>
+</body>
+</html>

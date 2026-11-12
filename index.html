@@ -3,16 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pay MARKEX Trading Academy</title>
-  <meta name="description" content="Pay MARKEX Trading Academy directly by UPI." />
+  <title>Diwali Offer | Pay MARKEX Trading Academy</title>
+  <meta name="description" content="MARKEX Diwali offer. Pay Markex Trading Academy securely by UPI." />
+  <meta name="theme-color" content="#1a0b08" />
   <style>
     :root {
-      --green: #1bc98a;
-      --ink: #f4f7f5;
-      --muted: #a8b8b0;
-      --bg: #07110d;
-      --card: #101c16;
-      --line: #234237;
+      --gold: #e8b84a;
+      --gold-deep: #c8922a;
+      --saffron: #ff8a3d;
+      --ink: #fff6e8;
+      --muted: #d7b896;
+      --bg: #140806;
+      --card: rgba(42, 18, 12, 0.92);
+      --line: rgba(232, 184, 74, 0.35);
+      --glow: rgba(255, 138, 61, 0.22);
     }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
@@ -21,34 +25,49 @@
       min-height: 100vh;
       min-height: 100dvh;
       overflow-x: hidden;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "Segoe UI", "Trebuchet MS", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(900px 420px at 50% -10%, rgba(27, 201, 138, 0.18), transparent 60%),
-        var(--bg);
+        radial-gradient(720px 320px at 50% -8%, var(--glow), transparent 58%),
+        radial-gradient(500px 280px at 100% 20%, rgba(232, 184, 74, 0.12), transparent 55%),
+        radial-gradient(420px 240px at 0% 80%, rgba(255, 138, 61, 0.1), transparent 50%),
+        linear-gradient(180deg, #1a0b08 0%, #0f0604 100%);
     }
     main {
       width: min(440px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 20px 0 calc(28px + env(safe-area-inset-bottom));
+      padding: 18px 0 calc(28px + env(safe-area-inset-bottom));
+    }
+    .offer {
+      display: inline-block;
+      margin: 0 0 12px;
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(232, 184, 74, 0.12);
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
     }
     .logo {
       display: block;
-      width: 112px;
+      width: 96px;
       height: auto;
-      margin: 0 auto 14px;
+      margin: 0 auto 12px;
       mix-blend-mode: lighten;
     }
     h1 {
+      font-family: Georgia, "Times New Roman", serif;
       font-size: clamp(26px, 7vw, 34px);
       line-height: 1.1;
       font-weight: 500;
       margin: 0 0 8px;
     }
     .lede {
-      margin: 0 0 22px;
+      margin: 0 0 18px;
       color: var(--muted);
-      font-family: "Segoe UI", sans-serif;
       font-size: 15px;
       line-height: 1.5;
     }
@@ -57,16 +76,14 @@
       border: 1px solid var(--line);
       border-radius: 22px;
       padding: 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
     }
     .amounts {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
-    button, .pay-link {
-      font-family: "Segoe UI", sans-serif;
-    }
-    .amounts button, .custom {
+    .amounts button {
       width: 100%;
       border: 1px solid var(--line);
       background: transparent;
@@ -76,23 +93,25 @@
       min-height: 48px;
       cursor: pointer;
       touch-action: manipulation;
+      font: inherit;
     }
-    .amounts button strong, .summary strong {
+    .amounts button strong {
       display: block;
       font-size: 16px;
+      color: var(--gold);
     }
-    .amounts button span, .summary span {
+    .amounts button span,
+    .summary span {
       color: var(--muted);
       font-size: 12px;
     }
     .amounts button.active {
-      border-color: var(--green);
-      background: rgba(27, 201, 138, 0.12);
+      border-color: var(--gold);
+      background: rgba(232, 184, 74, 0.14);
     }
     label {
       display: block;
       margin: 14px 0 6px;
-      font-family: "Segoe UI", sans-serif;
       font-size: 12px;
       letter-spacing: 0.04em;
       color: var(--muted);
@@ -100,7 +119,7 @@
     input {
       width: 100%;
       border: 1px solid var(--line);
-      background: #0b1611;
+      background: #1d0e0a;
       color: var(--ink);
       border-radius: 12px;
       padding: 12px 14px;
@@ -111,78 +130,95 @@
       background: #fff;
       border-radius: 18px;
       padding: 14px;
-      min-height: 280px;
+      min-height: 260px;
       display: grid;
       place-items: center;
     }
-    .qr-wrap svg { width: min(280px, 100%); height: auto; }
+    .qr-wrap svg { width: min(260px, 100%); height: auto; }
     .summary {
       display: flex;
       justify-content: space-between;
       gap: 12px;
       margin-top: 14px;
-      font-family: "Segoe UI", sans-serif;
     }
+    .summary strong { display: block; font-size: 16px; }
     .summary .amount { text-align: right; }
     .pay-link {
       display: block;
+      width: 100%;
       text-align: center;
       text-decoration: none;
       margin-top: 14px;
-      background: var(--green);
-      color: #062117;
-      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold), var(--saffron));
+      color: #2a1208;
+      font-weight: 800;
+      border: 0;
       border-radius: 14px;
       padding: 14px 16px;
       min-height: 48px;
+      cursor: pointer;
       touch-action: manipulation;
+      font: inherit;
     }
-    @media (max-width: 480px) {
-      .amounts { grid-template-columns: 1fr; }
-      .summary { align-items: flex-start; }
-      .summary .amount { text-align: right; }
-      .qr-wrap { min-height: 0; padding: 10px; }
-      .card { padding: 14px; }
+    .pay-link:disabled {
+      opacity: 0.55;
+      cursor: default;
     }
     .note {
       margin: 14px 4px 0;
       color: var(--muted);
-      font-family: "Segoe UI", sans-serif;
       font-size: 12px;
       line-height: 1.45;
+    }
+    .status {
+      margin: 10px 0 0;
+      min-height: 1.2em;
+      color: var(--gold);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    @media (max-width: 480px) {
+      .amounts { grid-template-columns: 1fr; }
+      .qr-wrap { min-height: 0; padding: 10px; }
+      .card { padding: 14px; }
     }
   </style>
 </head>
 <body>
   <main>
+    <p class="offer">Diwali Offer</p>
     <img class="logo" src="./assets/markex-logo.jpg" alt="MARKEX Forex Trading Academy" />
     <h1>Markex Trading Academy</h1>
-    <p class="lede">Pay directly to the academy bank account. Scan the QR or open it in any UPI app.</p>
+    <p class="lede">Celebrate Diwali with MARKEX. Scan the QR or open your UPI app to pay the academy directly.</p>
     <section class="card">
       <div class="amounts">
         <button type="button" data-amount="5000" class="active"><strong>₹5,000</strong><span>Enrollment</span></button>
         <button type="button" data-amount="10000"><strong>₹10,000</strong><span>Advanced membership</span></button>
       </div>
       <label for="amount">Amount in rupees</label>
-      <input id="amount" inputmode="decimal" value="5000" />
-      <div class="qr-wrap" id="qr" aria-label="UPI QR code"></div>
+      <input id="amount" inputmode="decimal" value="5000" autocomplete="off" />
       <div class="summary">
         <div><span>Payee</span><strong>Markex Trading Academy</strong></div>
         <div class="amount"><span>Amount</span><strong id="amount-label">₹5,000.00</strong></div>
       </div>
-      <a class="pay-link" id="pay-link" href="#">Open in UPI app</a>
+      <div class="qr-wrap" id="qr" aria-label="UPI QR code"></div>
+      <button type="button" class="pay-link" id="pay-link">Open in UPI app</button>
+      <p class="status" id="pay-status" role="status"></p>
     </section>
-    <p class="note">Scan the QR or open your UPI app. The payment goes to Markex Trading Academy.</p>
+    <p class="note">Use any UPI app such as PhonePe, Google Pay, or Paytm. The money goes to Markex Trading Academy. The UPI ID is not shown on this page.</p>
   </main>
   <script type="module">
     import { qrcode } from "./packages/core/src/qr-lib.js";
 
     const payee = "Markex Trading Academy";
-    const vpa = "akhilshijo5@oksbi";
+    const vpa = "8137864105@superyes";
     const amountInput = document.getElementById("amount");
     const qrHost = document.getElementById("qr");
     const payLink = document.getElementById("pay-link");
     const amountLabel = document.getElementById("amount-label");
+    const payStatus = document.getElementById("pay-status");
+
+    let currentUri = "";
 
     function money(value) {
       const amount = Math.round(Number(value) * 100) / 100;
@@ -191,14 +227,15 @@
     }
 
     function upiUri(amount) {
-      const query = [
-        ["pa", vpa],
-        ["pn", payee],
-        ["am", amount],
-        ["cu", "INR"],
-        ["tn", "MARKEX Trading Academy"]
-      ].map(([key, val]) => key + "=" + encodeURIComponent(val)).join("&");
-      return "upi://pay?" + query;
+      // Keep pa readable for UPI apps. Encode only values that need it.
+      const parts = [
+        "pa=" + encodeURIComponent(vpa),
+        "pn=" + encodeURIComponent(payee),
+        "am=" + encodeURIComponent(amount),
+        "cu=INR",
+        "tn=" + encodeURIComponent("MARKEX Diwali Offer")
+      ];
+      return "upi://pay?" + parts.join("&");
     }
 
     function render() {
@@ -207,18 +244,38 @@
         button.classList.toggle("active", button.dataset.amount === String(Number(amount)));
       });
       if (!amount) {
+        currentUri = "";
         qrHost.textContent = "Enter an amount greater than zero.";
-        payLink.removeAttribute("href");
+        payLink.disabled = true;
         amountLabel.textContent = "—";
+        payStatus.textContent = "";
         return;
       }
-      const uri = upiUri(amount);
+      currentUri = upiUri(amount);
       const qr = qrcode(0, "M");
-      qr.addData(uri);
+      qr.addData(currentUri);
       qr.make();
       qrHost.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 12, scalable: true });
-      payLink.href = uri;
-      amountLabel.textContent = "₹" + Number(amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      payLink.disabled = false;
+      amountLabel.textContent = "₹" + Number(amount).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      payStatus.textContent = "Scan the QR, or tap the button once to open your UPI app.";
+    }
+
+    function openUpiApp(event) {
+      event.preventDefault();
+      if (!currentUri) return;
+      payStatus.textContent = "Opening your UPI app…";
+      // User-gesture navigation avoids browser spam / blocked upi:// redirects.
+      const opener = window.open(currentUri, "_self");
+      if (!opener) {
+        window.location.href = currentUri;
+      }
+      window.setTimeout(() => {
+        payStatus.textContent = "If no app opened, scan the QR with PhonePe, Google Pay, or Paytm.";
+      }, 1200);
     }
 
     document.querySelectorAll(".amounts button").forEach((button) => {
@@ -228,6 +285,7 @@
       });
     });
     amountInput.addEventListener("input", render);
+    payLink.addEventListener("click", openUpiApp);
     render();
   </script>
 </body>

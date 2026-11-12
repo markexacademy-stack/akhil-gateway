@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment status | MARKEX Diwali Offer</title>
+  <meta name="theme-color" content="#1a0b08" />
+  <style>
+    :root {
+      --gold: #e8b84a;
+      --saffron: #ff8a3d;
+      --ink: #fff6e8;
+      --muted: #d7b896;
+      --bg: #140806;
+      --card: #2a120c;
+      --line: rgba(232, 184, 74, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(700px 280px at 50% -10%, rgba(255, 138, 61, 0.18), transparent 55%),
+        linear-gradient(180deg, #1a0b08, #0f0604);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    main { width: min(440px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 48px; }
+    .logo { display: block; width: 96px; height: auto; margin: 0 auto 16px; mix-blend-mode: lighten; }
+    h1 { font-size: clamp(26px, 7vw, 34px); font-weight: 500; margin: 0 0 12px; }
+    p { font-family: "Segoe UI", sans-serif; color: var(--muted); line-height: 1.5; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px; }
+    a { color: var(--gold); }
+    strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="./assets/markex-logo.jpg" alt="MARKEX Forex Trading Academy" />
+    <h1 id="title">Checking payment</h1>
+    <section class="card" id="detail"><p>Waiting for the gateway confirmation.</p></section>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const reference = params.get("ref") || "";
+    const title = document.getElementById("title");
+    const detail = document.getElementById("detail");
+
+    function text(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+    }
+
+    function show(row) {
+      const captured = row.payment_status === "SUCCESS";
+      const authorized = row.payment_status === "PROCESSING";
+      title.textContent = captured ? "Payment captured" : authorized ? "Payment authorized" : row.payment_status === "REFUNDED" ? "Payment refunded" : "Payment not captured";
+      const settlement = captured
+        ? "The card company has captured the payment. Settlement into the bank account follows the company’s payout cycle and is still pending."
+        : authorized
+          ? "The card was authorized. The payment is not captured yet, and the bank settlement has not completed."
+          : "This payment is not a completed bank settlement.";
+      detail.innerHTML = "<p><strong>" + text(row.amount) + "</strong> · " + text(String(row.payment_method).replaceAll("_", " ")) + "</p>"
+        + "<p>Reference " + text(row.transaction_reference) + "</p>"
+        + "<p>" + settlement + "</p>"
+        + "<p>Status: " + text(row.payment_status) + ". Settlement: " + text(row.settlement_status) + ".</p>"
+        + "<p><a href='./index.html'>Back to Diwali checkout</a></p>";
+    }
+
+    async function load() {
+      if (!reference) {
+        title.textContent = "Payment reference missing";
+        detail.innerHTML = "<p><a href='./index.html'>Back to Diwali checkout</a></p>";
+        return;
+      }
+      const response = await fetch("/api/payments/status/" + encodeURIComponent(reference));
+      const body = await response.json();
+      if (!response.ok) {
+        title.textContent = "Payment not confirmed";
+        detail.innerHTML = "<p>" + text(body.error || "The payment could not be found.") + "</p><p><a href='./index.html'>Try again</a></p>";
+        return;
+      }
+      show(body);
+      if (body.payment_status === "PENDING" || body.payment_status === "CREATED") setTimeout(load, 3000);
+    }
+    load();
+  </script>
+</body>
+</html>
